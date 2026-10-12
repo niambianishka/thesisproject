@@ -1,0 +1,2017 @@
+        /* 
+          10-30-60 COLOR RULE & FLAT UI (NO GRADIENTS)
+          - 60% Dominant (Background / Canvas): #F8F9FA (Off-white / Light Grey)
+          - 30% Structural / Supporting (Cards, Top Bar, Text): #1E293B (Deep Slate)
+          - 10% Accent (Interactive, Highlights): #0284C7 (Flat Ocean Blue)
+        */
+        :root {
+            --bg-dominant: #F8F9FA;
+            --surface-color: #FFFFFF;
+            --surface-muted: #EEEEEE; /* Neutral light gray fill */
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --border-color: #CBD5E1;
+            --accent-primary: #0284C7; /* Ocean Blue */
+            --accent-hover: #0369A1;
+            --accent-success: #0D9488; /* Teal for correct */
+            --accent-amber: #D97706; /* Amber for retake */
+            --accent-gold: #F59E0B; /* Gold for recommendation stars */
+            --accent-danger: #E11D48;  /* Rose for incorrect */
+            --font-heading: 'Sora', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --border-radius: 12px; /* Rounded corners */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            /* Stop iOS from inflating text in landscape */
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        /* Touch-friendly interactive elements (no 300ms delay, no tap flash) */
+        .btn,
+        button,
+        a,
+        .exam-item,
+        .brand-container {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-dominant);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--text-primary);
+        }
+
+        /* TOP BAR */
+        header {
+            background-color: var(--surface-color);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+        }
+
+        /* Module progress bar: sits directly under the top bar while answering */
+        .exam-progress {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 6px;
+            margin-top: 0.6rem;
+            background-color: var(--surface-muted);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .exam-progress-fill {
+            width: 0;
+            height: 100%;
+            background-color: var(--accent-primary);
+            border-radius: 999px;
+            transition: width 0.25s ease;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .logo-badge {
+            background-color: transparent;
+            color: var(--text-primary);
+            width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border-radius: 0;
+        }
+
+        .brand-title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.1s ease;
+            border-radius: var(--border-radius);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--text-primary);
+            background-color: var(--bg-dominant);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+            color: #FFFFFF;
+        }
+
+        /* Resume: teal */
+        .btn-resume {
+            background-color: var(--accent-success);
+            border-color: var(--accent-success);
+            color: #FFFFFF;
+        }
+
+        .btn-resume:hover {
+            background-color: #0F766E;
+            border-color: #0F766E;
+            color: #FFFFFF;
+        }
+
+        /* Retake: amber */
+        .btn-retake {
+            background-color: var(--accent-amber);
+            border-color: var(--accent-amber);
+            color: #FFFFFF;
+        }
+
+        .btn-retake:hover {
+            background-color: #B45309;
+            border-color: #B45309;
+            color: #FFFFFF;
+        }
+
+        /* Module action buttons: colored at rest, dark gray on hover */
+        .exam-item .btn {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .exam-item .btn-primary:hover,
+        .exam-item .btn-resume:hover,
+        .exam-item .btn-retake:hover {
+            background-color: #475569;
+            border-color: #475569;
+            color: #FFFFFF;
+        }
+
+        .btn-danger {
+            background-color: var(--surface-color);
+            border-color: var(--accent-danger);
+            color: var(--accent-danger);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--accent-danger);
+            color: #FFFFFF;
+        }
+
+        /* Top bar buttons: flat text buttons, neutral (no hue on any page) */
+        header .btn,
+        header .btn-danger {
+            border: none;
+            background-color: transparent;
+            border-radius: 0;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-primary);
+        }
+
+        header .btn:hover,
+        header .btn-danger:hover {
+            border: none;
+            background-color: transparent;
+            color: var(--text-secondary);
+        }
+
+        header .nav-active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* MAIN CONTAINER */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* CARDS / CONTAINERS */
+        .card {
+            background-color: var(--surface-color);
+            border: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* Borderless container for the modules list (no outer box).
+           Stretches to the full column height so the list reaches the bottom */
+        .module-section {
+            margin-bottom: 0;
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* The featured main module, shown above the trial-module list */
+        .main-module-wrap {
+            margin-bottom: 1.75rem;
+        }
+
+        .exam-kicker {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        /* ------------------------------------------------------------------
+           Home page: the Main Module hero. The assessment is the headline of
+           the site, so it leads with a large centred title, at-a-glance facts,
+           a single call to action and its three parts described in full.
+           It is deliberately unboxed and monochrome: the content sits on the
+           page itself rather than inside a card.
+           ------------------------------------------------------------------ */
+        .main-hero {
+            border: none;
+            background-color: transparent;
+        }
+
+        .hero-body {
+            padding: 0.5rem 0 2rem;
+            text-align: center;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-kicker i {
+            font-size: 1rem;
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: 2.35rem;
+            line-height: 1.1;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+        }
+
+        .hero-lede {
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-chips {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-heading);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        /* Plain facts separated by thin vertical rules, not boxed chips */
+        .hero-chip + .hero-chip {
+            margin-left: 0.9rem;
+            padding-left: 0.9rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .hero-chip i {
+            font-size: 0.95rem;
+        }
+
+        .hero-chip.chip-progress {
+            color: var(--accent-success);
+        }
+
+        .hero-chip.chip-done {
+            color: var(--text-primary);
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem 1.25rem;
+        }
+
+        .btn-hero {
+            font-size: 1rem;
+            padding: 0.85rem 1.6rem;
+        }
+
+        /* The hero's call to action matches the neutral, unboxed hero */
+        .main-hero .btn-primary {
+            background-color: var(--text-primary);
+            border-color: var(--text-primary);
+            color: #FFFFFF;
+        }
+
+        .main-hero .btn-primary:hover {
+            background-color: #0F172A;
+            border-color: #0F172A;
+            color: #FFFFFF;
+        }
+
+        .hero-note {
+            max-width: 28rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-parts {
+            border-top: 2px solid var(--border-color);
+            padding: 1.75rem 0 0;
+            background-color: transparent;
+        }
+
+        .part-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .part-card {
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--surface-color);
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .part-index {
+            font-family: var(--font-heading);
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+        }
+
+        .part-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .part-card p {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .part-items {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            padding-top: 0.85rem;
+            border-top: 1.5px solid var(--border-color);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .part-items i {
+            color: var(--text-secondary);
+        }
+
+        /* DASHBOARD GRID */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Let each column stretch to the row height so the modules list can fill it */
+        .dashboard-grid > div {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .exam-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+            max-height: none;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        /* Fade-out at the bottom of the modules list */
+        .exam-list-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .exam-list-fade {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 72px;
+            pointer-events: none;
+            background: linear-gradient(to bottom, rgba(248, 249, 250, 0) 0%, var(--bg-dominant) 90%);
+            opacity: 1;
+            transition: opacity 0.25s ease;
+        }
+
+        .exam-list-fade.hidden {
+            opacity: 0;
+        }
+
+        /* Fade-in at the top of the modules list */
+        .exam-list-fade-top {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 72px;
+            pointer-events: none;
+            background: linear-gradient(to top, rgba(248, 249, 250, 0) 0%, var(--bg-dominant) 90%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .exam-list-fade-top.show {
+            opacity: 1;
+        }
+
+        .exam-item {
+            border: 2px solid transparent;
+            padding: 1.25rem;
+            background-color: var(--surface-muted);
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            transition: border-color 0.35s ease, background-color 0.35s ease;
+        }
+
+        /* Light gray fill at rest; white fill with a gray border on hover */
+        .exam-item:hover {
+            border-color: var(--border-color);
+            background-color: var(--surface-color);
+        }
+
+        .exam-item > .btn {
+            flex-shrink: 0;
+        }
+
+        /* Empty state when search has no matches */
+        .exam-empty {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: var(--font-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .exam-empty i {
+            font-size: 1.2rem;
+        }
+
+        /* Modules page: until the Main Module is assessed its trial modules are
+           shown under a white tint with an overlay message (no separate panel) */
+        .exam-list-wrap.is-locked .exam-list {
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .list-lock-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 1.5rem;
+            text-align: center;
+            background-color: rgba(248, 249, 250, 0.88);
+        }
+
+        .list-lock-overlay > i {
+            font-size: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .list-lock-overlay h3 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+        }
+
+        .list-lock-overlay p {
+            max-width: 32rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        /* The overlay's action is the page's primary call to action: hold it on
+           the accent colour in every state (rest, hover, focus, active) so it
+           never falls back to the neutral button treatment. */
+        .list-lock-overlay .btn-primary {
+            background-color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+            color: #FFFFFF;
+            padding: 0.7rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .list-lock-overlay .btn-primary:hover,
+        .list-lock-overlay .btn-primary:focus,
+        .list-lock-overlay .btn-primary:focus-visible,
+        .list-lock-overlay .btn-primary:active {
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+            color: #FFFFFF;
+        }
+
+        /* A locked card action stays visible but is not interactive */
+        .exam-item .btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* Text grows a little when the module card is hovered */
+        .exam-info {
+            transition: transform 0.35s ease;
+            transform-origin: left center;
+        }
+
+        .exam-item:hover .exam-info {
+            transform: scale(1.02);
+        }
+
+        .exam-info h3 {
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .exam-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Plain-text meta line ("X Items | Timed Assessment") — no boxes */
+        .exam-meta {
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.78rem;
+            font-family: var(--font-heading);
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+        }
+
+        .meta-divider {
+            display: inline-block;
+            width: 1px;
+            height: 12px;
+            background-color: var(--border-color);
+        }
+
+        /* Expandable module search */
+        .module-search {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            padding: 0.3rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 1.15rem;
+            transition: color 0.1s;
+            border-radius: 0;
+        }
+
+        .search-toggle:hover {
+            color: var(--text-secondary);
+        }
+
+        .search-field {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--text-primary);
+            padding: 0.2rem 0.1rem;
+            min-width: 280px;
+        }
+
+        .search-field > i {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .search-field input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .search-field input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-close {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            font-size: 1.05rem;
+            padding: 0.1rem;
+        }
+
+        .search-close:hover {
+            color: var(--text-primary);
+        }
+
+        .module-search.expanded .search-toggle {
+            display: none;
+        }
+
+        .module-search.expanded .search-field {
+            display: flex;
+            animation: searchGrow 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes searchGrow {
+            from {
+                opacity: 0;
+                transform: scaleX(0.9);
+                transform-origin: right center;
+            }
+            to {
+                opacity: 1;
+                transform: scaleX(1);
+                transform-origin: right center;
+            }
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background-color: var(--bg-dominant);
+            border: 1px solid var(--border-color);
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-family: var(--font-heading);
+            border-radius: 6px;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ANALYTICS & SMOOTH POPPING / SINGLE SPIN PIE METER */
+        .analytics-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            /* Rounded light gray filled box */
+            background-color: var(--surface-muted);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+        }
+
+        /* Wrapper handles only the smooth pop-up (translate + scale) */
+        .pie-wrapper {
+            margin: 1.5rem 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transform: translateY(0) scale(1);
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .pie-wrapper:hover {
+            transform: translateY(-8px) scale(1.08);
+        }
+
+        /* Container handles the conic gradient and the single spin */
+        .pie-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-success) 0deg 0deg, var(--border-color) 0deg 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+        }
+
+        /* Circle spin starts only AFTER the percentage has animated (delay = 0.45s) */
+        .pie-wrapper:hover .pie-container {
+            animation: singleSpin 0.9s cubic-bezier(0.45, 0, 0.15, 1) 0.45s forwards;
+        }
+
+        @keyframes singleSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .pie-container::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            background-color: var(--surface-color);
+            border-radius: 50%;
+        }
+
+        .pie-center-text {
+            position: relative;
+            z-index: 2;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.2rem;
+            will-change: transform;
+        }
+
+        /* Percentage animates FIRST (pops), then counter-spins with the circle */
+        .pie-wrapper:hover .pie-center-text {
+            animation: percentPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+                       counterSpinOnce 0.9s cubic-bezier(0.45, 0, 0.15, 1) 0.45s forwards;
+        }
+
+        @keyframes percentPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes counterSpinOnce {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        .stats-breakdown {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        /* TOPIC MASTERY INDICATORS */
+        .mastery-card {
+            text-align: left;
+            min-width: 0;
+            margin-bottom: 0;
+            /* Rounded light gray filled box */
+            background-color: var(--surface-muted);
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+        }
+
+        .mastery-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 1rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.72rem;
+            font-family: var(--font-heading);
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+        }
+
+        .mastery-legend .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .mastery-legend .legend-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .mastery-carousel {
+            position: relative;
+            min-width: 0;
+            padding: 0 2rem;
+        }
+
+        .mastery-viewport {
+            overflow: hidden;
+            border-radius: 10px;
+            min-width: 0;
+        }
+
+        .mastery-slides {
+            display: flex;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+            min-width: 0;
+        }
+
+        .mastery-topic {
+            flex: 0 0 100%;
+            box-sizing: border-box;
+            padding: 0.5rem 0;
+        }
+
+        .mastery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            border: none;
+            background: none;
+            color: var(--text-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        #mastery-prev { left: 0; }
+        #mastery-next { right: 0; }
+
+        .mastery-nav:hover:not(:disabled) {
+            color: var(--accent-primary);
+        }
+
+        .mastery-nav:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        /* Title on top, indicator text below it (better for the narrow column) */
+        .mastery-topic-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.45rem;
+            margin-bottom: 0.65rem;
+        }
+
+        .mastery-topic-name {
+            font-family: var(--font-heading);
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .mastery-badge {
+            flex-shrink: 0;
+            font-family: var(--font-heading);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .mastery-badge.level-low { color: var(--accent-danger); }
+        .mastery-badge.level-mid { color: var(--accent-amber); }
+        .mastery-badge.level-good { color: var(--accent-success); }
+        .mastery-badge.level-none { color: var(--text-secondary); }
+
+        .mastery-track {
+            height: 6px;
+            border-radius: 3px;
+            background-color: var(--bg-dominant);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .mastery-fill {
+            height: 100%;
+            background-color: var(--border-color);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .mastery-fill.level-low { background-color: var(--accent-danger); }
+        .mastery-fill.level-mid { background-color: var(--accent-amber); }
+        .mastery-fill.level-good { background-color: var(--accent-success); }
+        .mastery-fill.level-none { background-color: var(--border-color); }
+
+        /* QUIZ ENGINE INTERFACE */
+        .quiz-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--surface-color);
+            border: 2px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+        }
+
+        .question-card {
+            background-color: var(--surface-color);
+            border: 2px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: var(--border-radius);
+        }
+
+        .question-number {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Unanswered question warning — inline notification, centered and compact */
+        .unanswered-warning {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 0.5rem;
+            background-color: #FEF2F2;
+            border: 2px solid var(--accent-danger);
+            color: var(--accent-danger);
+            padding: 0.55rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            font-family: var(--font-heading);
+            margin-bottom: 1rem;
+        }
+
+        .unanswered-warning.show {
+            display: flex;
+        }
+
+        .shake {
+            animation: shakeX 0.4s ease;
+        }
+
+        @keyframes shakeX {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-7px); }
+            40% { transform: translateX(7px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-item {
+            border: 2px solid var(--border-color);
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: border-color 0.1s, background-color 0.1s;
+        }
+
+        .option-item:hover {
+            border-color: var(--accent-primary);
+            background-color: var(--bg-dominant);
+        }
+
+        .option-item input[type="radio"] {
+            accent-color: var(--accent-primary);
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+
+        .option-item.selected {
+            border-color: var(--accent-primary);
+            background-color: #E0F2FE;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* MULTI-PART EXAM (modules that define "parts") */
+        .part-stepper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            list-style: none;
+            margin: 0 0 1.25rem;
+            padding: 0;
+        }
+
+        .part-step {
+            flex: 1 1 150px;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.65rem 0.85rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--surface-color);
+            font-family: var(--font-heading);
+            font-size: 0.78rem;
+            line-height: 1.2;
+            color: var(--text-secondary);
+        }
+
+        .part-step-num {
+            flex: none;
+            width: 1.45rem;
+            height: 1.45rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border-color);
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .part-step-name { min-width: 0; }
+
+        .part-step.is-active {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .part-step.is-active .part-step-num,
+        .part-step.is-done .part-step-num {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .part-step.is-done { color: var(--text-primary); }
+
+        /* Each question rendered inside a multi-part page */
+        .page-question { margin-bottom: 1.5rem; }
+
+        .question-card.is-unanswered {
+            border-color: var(--accent-danger);
+            background-color: #FEF2F2;
+        }
+
+        /* RESULTS VIEW */
+        .results-summary-card {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .score-display {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 1rem 0;
+        }
+
+        .grade-badge-display {
+            display: inline-block;
+            background-color: var(--text-primary);
+            color: #FFFFFF;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            font-size: 1.25rem;
+            border-radius: 8px;
+        }
+
+        /* Grade badge sits beside its remark, not above it */
+        .result-grade-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-grade-row #result-remark {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .review-list {
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .review-item {
+            border: 2px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+        }
+
+        .review-item.correct {
+            border-left: 8px solid var(--accent-success);
+        }
+
+        .review-item.incorrect {
+            border-left: 8px solid var(--accent-danger);
+        }
+
+        /* The explanation animates open while the answer card is hovered */
+        .review-explanation {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            margin-top: 0;
+            transition: grid-template-rows 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+        }
+
+        /* This row must be padding-free so it can shrink to nothing ... */
+        .review-explanation-clip {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* ... while the styled box lives inside it */
+        .review-explanation-body {
+            font-size: 0.85rem;
+            background-color: var(--bg-dominant);
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* Revealed on hover, and on tap for touch screens (see .show-explanation) */
+        .review-item:hover .review-explanation,
+        .review-item.show-explanation .review-explanation {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            margin-top: 0.75rem;
+        }
+
+        /* ------------------------------------------------------------------
+           Results view: the detailed review sits beside this attempt's
+           competency ratio, topic mastery and recommended modules.
+           ------------------------------------------------------------------ */
+        .results-review-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .results-review-grid .review-list {
+            margin-top: 0;
+        }
+
+        .results-side {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .side-card {
+            background-color: var(--surface-muted);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .side-card.center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .side-card .card-header {
+            margin-bottom: 1rem;
+        }
+
+        .side-sub {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        /* The review is grouped into Part 1, Part 2, Part 3 ... sections.
+           Each part is a dropdown row; opening one closes the other two. */
+        .review-part {
+            margin-bottom: 1rem;
+        }
+
+        .review-part-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--surface-muted);
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+        }
+
+        .review-part-head:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
+        .review-part-index {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.15rem;
+        }
+
+        .review-part-title h3 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+        }
+
+        .review-part-right {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .review-part-score {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-secondary);
+        }
+
+        .review-part-chevron {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            transition: transform 0.2s ease;
+        }
+
+        .review-part.open .review-part-chevron {
+            transform: rotate(180deg);
+        }
+
+        .review-part-body {
+            display: none;
+            padding-top: 1rem;
+        }
+
+        .review-part.open .review-part-body {
+            display: block;
+        }
+
+        .review-part-body .review-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Topic mastery as a static stack (the dashboard keeps its carousel) */
+        .mastery-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .mastery-stack .mastery-topic {
+            flex: 0 0 auto;
+            padding: 0;
+        }
+
+        .mastery-topic-sub {
+            margin-top: 0.4rem;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
+
+        /* Recommended modules beside the review */
+        .recommended-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-height: 15rem;
+            overflow-y: auto;
+            /* The list scrolls but keeps no visible scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .recommended-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .recommended-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.55rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background-color: var(--surface-color);
+            padding: 0.6rem 0.75rem;
+        }
+
+        .recommended-item > i {
+            color: var(--accent-gold);
+            font-size: 1rem;
+            margin-top: 0.1rem;
+        }
+
+        .recommended-item-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            min-width: 0;
+        }
+
+        .recommended-item-title {
+            font-family: var(--font-heading);
+            font-size: 0.82rem;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .recommended-item-sub {
+            font-size: 0.7rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .recommended-go {
+            width: 100%;
+            justify-content: center;
+            margin-top: 1rem;
+            background-color: var(--text-primary);
+            border-color: var(--text-primary);
+            color: #FFFFFF;
+        }
+
+        .recommended-go:hover {
+            background-color: #0F172A;
+            border-color: #0F172A;
+            color: #FFFFFF;
+        }
+
+        .side-empty {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .side-empty i {
+            flex-shrink: 0;
+            color: var(--accent-success);
+            font-size: 1.05rem;
+        }
+
+        /* "Recommended" marker on the trial-module cards */
+        .exam-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            border-radius: 999px;
+            padding: 0.15rem 0.55rem;
+            font-family: var(--font-heading);
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .exam-badge i {
+            font-size: 0.8rem;
+        }
+
+        /* The card marker sits above the module title */
+        .exam-badge.badge-recommended {
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+            margin-bottom: 0.45rem;
+        }
+
+        .exam-badge.badge-recommended i {
+            color: var(--accent-gold);
+        }
+
+        /* HISTORY HOVER DROPDOWN (SHOWS ONLY LAST 2 RECENT) */
+        .history-dropdown {
+            position: absolute;
+            top: 65px;
+            right: 8rem;
+            width: 360px;
+            background-color: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            display: none;
+            z-index: 1100;
+        }
+
+        .history-dropdown.active {
+            display: block;
+        }
+
+        .history-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--border-color);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-dominant);
+            border-top-left-radius: var(--border-radius);
+            border-top-right-radius: var(--border-radius);
+            font-size: 0.85rem;
+        }
+
+        .history-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item-title {
+            font-weight: 600;
+            font-family: var(--font-heading);
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-meta {
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+        }
+
+        /* FOOTER CREDITS */
+        footer {
+            background-color: var(--surface-color);
+            border-top: 2px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 3rem;
+        }
+
+        footer .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        footer strong {
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+        }
+
+        /* NOTIFICATION TOAST — centered and compact */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-primary);
+            color: var(--surface-color);
+            padding: 0.65rem 1.1rem;
+            font-family: var(--font-heading);
+            font-size: 0.82rem;
+            line-height: 1.4;
+            text-align: center;
+            max-width: min(400px, calc(100vw - 2rem));
+            border-radius: 10px;
+            border: 2px solid var(--text-primary);
+            z-index: 2000;
+            display: none;
+        }
+
+        /* ============================================================
+           RESPONSIVE / MOBILE  (kept last so it overrides the base rules)
+           The dashboard collapses to one column, which naturally stacks
+           the sections in DOM order:
+             1) Main Module
+             2) Abstract Examination Trial Modules
+             3) Competency & Accuracy Ratio
+             4) Topic Mastery
+           ============================================================ */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            /* Review + side analytics stack on small screens */
+            .results-review-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Let the modules list flow with the page instead of inner-scrolling */
+            .module-section { flex: none; }
+            .exam-list-wrap { flex: none; }
+            .exam-list {
+                height: auto;
+                overflow-y: auto;
+                padding-right: 0;
+            }
+
+            /* The Main Module hero stacks on small screens */
+            .hero-body { padding: 0.5rem 0 1.5rem; }
+            .hero-title { font-size: 1.75rem; }
+            .hero-parts { padding: 1.5rem 0 0; }
+            .part-list { grid-template-columns: 1fr; }
+
+            /* Facts wrap onto their own lines: drop the vertical rules */
+            .hero-chips { gap: 0.25rem 1rem; }
+            .hero-chip + .hero-chip {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+            }
+
+            header {
+                padding: 0.75rem 1rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+
+            .brand-container { justify-content: center; }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+
+            header .btn,
+            header .btn-danger {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            /* The hover-only history preview isn't usable on touch */
+            .history-dropdown { display: none !important; }
+
+            main { padding: 1.25rem 0.875rem; }
+
+            .card { padding: 1.25rem; }
+
+            .card-header {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .search-field {
+                min-width: 0;
+                width: 100%;
+            }
+
+            /* Module cards: info on top, full-width action button below */
+            .exam-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .exam-item > .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Quiz meta bar wraps instead of overflowing */
+            .quiz-meta-bar {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 0.85rem 1rem;
+                font-size: 0.82rem;
+            }
+
+            .question-card { padding: 1.25rem; }
+            .question-text { font-size: 1.05rem; }
+
+            /* Part steps stack full width on small screens */
+            .part-step { flex: 1 1 100%; }
+
+            /* Quiz controls stack: nav buttons and exit button full width */
+            .quiz-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .quiz-controls > .btn,
+            .quiz-controls > div { width: 100%; }
+
+            .quiz-controls > div > .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .results-summary-card { padding: 2rem 1.25rem; }
+            .score-display { font-size: 2.25rem; }
+            .review-item { padding: 1.15rem; }
+
+            footer { padding: 1.25rem 1rem; }
+
+            /* Mobile ergonomics */
+            input,
+            select,
+            textarea {
+                font-size: 16px; /* prevents iOS zoom-on-focus */
+            }
+
+            header .btn,
+            header .btn-danger {
+                min-height: 42px;
+            }
+
+            /* Bigger carousel arrows for thumbs */
+            .mastery-carousel { padding: 0 2.25rem; }
+            .mastery-nav { width: 36px; height: 36px; font-size: 1.6rem; }
+        }
+
+        @media (max-width: 480px) {
+            .brand-title { font-size: 1rem; }
+
+            .pie-container { width: 140px; height: 140px; }
+            .pie-container::before { width: 96px; height: 96px; }
+
+            .score-display { font-size: 1.9rem; }
+
+            main { padding: 1rem 0.75rem; }
+            .card { padding: 1rem; }
+            .mastery-card { padding: 1.1rem; }
+            .question-card { padding: 1rem; }
+            .question-text { font-size: 1rem; }
+            .review-item { padding: 1rem; }
+
+            /* Main Module hero: tighter on phones */
+            .hero-body { padding: 0.5rem 0 1.25rem; }
+            .hero-title { font-size: 1.5rem; }
+            .hero-parts { padding: 1.25rem 0 0; }
+            .part-card { padding: 1rem; }
+        }
+
+        @media (max-width: 400px) {
+            .brand-container { gap: 0.4rem; }
+
+            header .btn,
+            header .btn-danger {
+                font-size: 0.76rem;
+                padding: 0.4rem 0.5rem;
+            }
+        }
+
+        /* ============================================================
+           PRINT-ONLY A4 REPORT
+           Hidden on screen. When the main module result is open this is
+           the only thing that prints, laid out to fit a single A4 page.
+           ============================================================ */
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        .print-report { display: none; }
+
+        .print-report .pr-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            border-bottom: 2px solid #1E293B;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+
+        .print-report .pr-brand { font-family: var(--font-heading); font-size: 17pt; font-weight: 700; letter-spacing: 1.5px; }
+        .print-report .pr-sub { font-size: 8pt; color: #475569; }
+        .print-report .pr-doc { font-size: 8pt; text-transform: uppercase; letter-spacing: 1.5px; color: #475569; text-align: right; }
+
+        .print-report .pr-title { font-family: var(--font-heading); font-size: 15pt; margin-bottom: 3px; }
+        .print-report .pr-meta { display: flex; gap: 22px; flex-wrap: wrap; font-size: 9pt; color: #475569; margin-bottom: 14px; }
+
+        .print-report .pr-boxes { display: flex; gap: 8px; }
+        .print-report .pr-box {
+            flex: 1;
+            border: 1.5px solid #94A3B8;
+            border-radius: 6px;
+            padding: 6px 8px;
+            text-align: center;
+        }
+        .print-report .pr-label { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.6px; color: #475569; font-family: var(--font-heading); }
+        .print-report .pr-value { font-family: var(--font-heading); font-size: 13pt; font-weight: 700; }
+
+        .print-report .pr-section {
+            font-family: var(--font-heading);
+            font-size: 9.5pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1.5px solid #94A3B8;
+            padding-bottom: 3px;
+            margin: 16px 0 8px;
+        }
+
+        .print-report .pr-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+        .print-report .pr-cell {
+            border: 1.5px solid #94A3B8;
+            border-radius: 4px;
+            padding: 4px 2px;
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 8pt;
+            font-weight: 600;
+        }
+        .print-report .pr-cell.bad { background: #EEEEEE; border-style: dashed; }
+
+        .print-report .pr-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 8pt; color: #475569; margin-top: 8px; }
+        .print-report .pr-legend .swatch { display: inline-block; width: 11px; height: 11px; border: 1.5px solid #94A3B8; vertical-align: -1px; margin-right: 4px; }
+        .print-report .pr-legend .swatch.bad { background: #EEEEEE; border-style: dashed; }
+
+        .print-report .pr-remark {
+            border: 1.5px solid #94A3B8;
+            border-left: 6px solid #1E293B;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 9.5pt;
+            margin-top: 16px;
+        }
+
+        .print-report .pr-foot {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 14px;
+            padding-top: 6px;
+            border-top: 1px solid #CBD5E1;
+            font-size: 7.5pt;
+            color: #475569;
+        }
+
+        /* Two side-by-side analytics panels (main module only) */
+        .print-report .pr-two-col { display: flex; gap: 10px; margin-top: 16px; }
+        .print-report .pr-two-col > .pr-panel { flex: 1; min-width: 0; }
+
+        .print-report .pr-panel {
+            border: 1.5px solid #94A3B8;
+            border-radius: 6px;
+            padding: 9px 10px;
+        }
+
+        .print-report .pr-panel-title {
+            font-family: var(--font-heading);
+            font-size: 8.5pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1.5px solid #94A3B8;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .print-report .pr-ratio { display: flex; align-items: center; gap: 10px; }
+        .print-report .pr-pie { flex: none; }
+        .print-report .pr-pie text { font-family: var(--font-heading); }
+
+        .print-report .pr-ratio-stats { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+        .print-report .pr-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 8.5pt;
+            border-bottom: 1px solid #CBD5E1;
+            padding-bottom: 3px;
+        }
+        .print-report .pr-stat:last-child { border-bottom: none; padding-bottom: 0; }
+        .print-report .pr-stat span { color: #475569; }
+        .print-report .pr-stat strong { font-family: var(--font-heading); }
+
+        .print-report .pr-topics { display: flex; flex-direction: column; gap: 8px; }
+        .print-report .pr-topic-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 8.5pt;
+            margin-bottom: 4px;
+        }
+        .print-report .pr-badge { font-family: var(--font-heading); font-size: 7.5pt; font-weight: 600; white-space: nowrap; }
+        .print-report .pr-badge.level-good { color: #0D9488; }
+        .print-report .pr-badge.level-mid { color: #D97706; }
+        .print-report .pr-badge.level-low { color: #E11D48; }
+
+        .print-report .pr-track { height: 7px; border: 1px solid #94A3B8; border-radius: 4px; overflow: hidden; }
+        .print-report .pr-fill { height: 100%; }
+        .print-report .pr-fill.level-good { background-color: #0D9488; }
+        .print-report .pr-fill.level-mid { background-color: #D97706; }
+        .print-report .pr-fill.level-low { background-color: #E11D48; }
+
+        .print-report .pr-topic-sub { font-size: 7.5pt; color: #475569; margin-top: 3px; }
+        .print-report .pr-note { font-size: 7.5pt; color: #475569; margin-top: 8px; }
+
+        @media print {
+            html,
+            body {
+                background: #FFFFFF !important;
+                height: auto !important;
+                min-height: 0 !important;
+            }
+
+            /* Only the printable report is sent to the printer */
+            body.has-print-report header,
+            body.has-print-report main,
+            body.has-print-report footer,
+            body.has-print-report .toast {
+                display: none !important;
+            }
+
+            body.has-print-report .print-report {
+                display: block !important;
+                color: #1E293B;
+                font-family: var(--font-body);
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .print-report .pr-box,
+            .print-report .pr-cell,
+            .print-report .pr-panel,
+            .print-report .pr-topic,
+            .print-report .pr-remark {
+                break-inside: avoid;
+            }
+        }

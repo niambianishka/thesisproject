@@ -1,0 +1,48 @@
+/* ==================================================================
+   PAGE-LOAD FADE-IN
+   ------------------------------------------------------------------
+   Every element inside the top bar, the main content and the footer
+   fades in when a page opens, rippling from the outer blocks to the
+   content nested inside them.
+
+   How it works
+   - A tiny inline script in <head> puts .atlas-arm on <html> before
+     the first paint, so nothing flashes in at full opacity first.
+   - This file animates every element inside the three landmarks.
+   - atlas-anim.js gives each element its own small delay
+     (--atlas-delay) and then removes .atlas-arm once the wave has
+     passed, so anything rendered later (search results, view
+     switches) simply appears instantly instead of re-fading.
+   - Without JavaScript the class is never added and the page shows
+     normally.
+
+   The fade is opacity-only on purpose: nothing moves, grows or
+   shrinks, so it stays comfortable for visitors who ask their system
+   for less motion. Add a `@media (prefers-reduced-motion: reduce)`
+   block containing `animation: none !important` if the effect should
+   be skipped for them entirely.
+   ================================================================== */
+
+@keyframes atlasCascadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* One rule for every element, kept at the specificity of a plain element
+   selector — both :where() wrappers add none, including the one around the
+   :not() list — so the component animations already on the pages (the pie
+   spin, the search grow, the warning shake) always win over it. The :not()
+   list holds the elements that manage their own opacity and must never be
+   faded in on their own. */
+html.atlas-arm :where(header *, main *, footer *):where(:not(.exam-list-fade):not(.exam-list-fade-top):not(.mastery-nav):not(.review-explanation)) {
+    animation: atlasCascadeIn 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation-delay: var(--atlas-delay, 0ms);
+}
+
+/* Never let the fade reach paper. */
+@media print {
+    html.atlas-arm :where(header *, main *, footer *) {
+        animation: none !important;
+        opacity: 1 !important;
+    }
+}

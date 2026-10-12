@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules — ATLAS Abstract Examination Trial Modules</title>
+    <!-- Google Fonts: Sora (Headers) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Remixicon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="atlas.css">
+
+    <!-- Page-load fade-in: armed on <html> before the first paint -->
+    <link rel="stylesheet" href="atlas-anim.css">
+    <script>document.documentElement.classList.add('atlas-arm');</script>
+    <script src="atlas-anim.js" defer></script>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <header>
+        <div class="brand-container" onclick="location.href='index.html'" title="Go to home">
+            <div>
+                <div class="brand-title">ATLAS</div>
+            </div>
+            <div class="logo-badge">
+                <i class="ri-book-open-line"></i>
+            </div>
+        </div>
+        <div class="nav-actions" style="position: relative;">
+            <button class="btn nav-active" onclick="location.href='modules.html'">
+                Modules
+            </button>
+            <button class="btn" onclick="location.href='library.html'">
+                Library
+            </button>
+            <button class="btn" id="btn-history-hover" onmouseenter="showHistoryHover()" onmouseleave="hideHistoryHover()" onclick="location.href='history.html'">
+                History
+            </button>
+            <button class="btn btn-danger" onclick="clearAllData()">
+                Reset
+            </button>
+
+            <!-- Hover Dropdown (Shows only the last recent modules) -->
+            <div class="history-dropdown" id="history-hover-dropdown" onmouseenter="showHistoryHover()" onmouseleave="hideHistoryHover()">
+                <div class="history-header">
+                    <span><i class="ri-history-line"></i> Last Recent Modules</span>
+                    <a href="history.html" style="font-size: 0.75rem; color: var(--text-primary); text-decoration: none; font-weight: 600;">View All →</a>
+                </div>
+                <div id="hover-history-items-container">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Module progress (shown only while a module is being answered) -->
+        <div class="exam-progress" id="exam-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Module progress" style="display: none;">
+            <div class="exam-progress-fill" id="exam-progress-fill"></div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main>
+        
+        <!-- VIEW 1: DASHBOARD -->
+        <section id="dashboard-view" class="view-section active">
+            <div class="dashboard-grid">
+                <div>
+                    <div class="module-section" id="trial-modules-section">
+                        <div class="card-header">
+                            <h2>Abstract Examination Trial Modules</h2>
+                            <div class="module-search" id="module-search">
+                                <button class="search-toggle" id="module-search-toggle" onclick="toggleModuleSearch()" aria-label="Search modules" title="Search modules">
+                                    <i class="ri-search-line"></i>
+                                </button>
+                                <div class="search-field" id="module-search-field">
+                                    <i class="ri-search-line"></i>
+                                    <input type="text" id="module-search-input" placeholder="Search modules..." oninput="renderExamList()">
+                                    <button class="search-close" onclick="toggleModuleSearch()" aria-label="Close search"><i class="ri-close-line"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
+                            Practical trial modules unlocked from your Main Module assessment. Each attempt shuffles question order and options randomly to test cognitive retention across advanced library and information science domains.
+                        </p>
+                        <div class="exam-list-wrap">
+                            <div class="exam-list" id="exam-list-container">
+                                <!-- Populated via JS -->
+                            </div>
+                            <div class="exam-list-fade" id="exam-list-fade"></div>
+                            <div class="exam-list-fade-top" id="exam-list-fade-top"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card analytics-card">
+                        <div class="card-header" style="width: 100%;">
+                            <h2>Competency &amp; Accuracy Ratio</h2>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Overall aggregate performance breakdown across all completed mock exams.</p>
+                        
+                        <div class="pie-wrapper" title="Hover to inspect competency rotation">
+                            <div class="pie-container" id="overall-pie">
+                                <div class="pie-center-text" id="pie-percentage">0%</div>
+                            </div>
+                        </div>
+
+                        <div class="stats-breakdown">
+                            <div class="stat-row">
+                                <span>Average Grade</span>
+                                <strong id="stat-avg-grade">5.00</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Exams Taken</span>
+                                <strong id="stat-total-exams">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Accuracy Ratio</span>
+                                <strong style="font-variant-numeric: tabular-nums;">
+                                    <span id="stat-correct-count" style="color: var(--accent-success);">0</span>
+                                    <span style="color: var(--text-secondary);">&nbsp;:&nbsp;</span>
+                                    <span id="stat-incorrect-count" style="color: var(--accent-danger);">0</span>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mastery-card">
+                        <div class="card-header" style="width: 100%;">
+                            <h2>Topic Mastery</h2>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Per-topic mastery based on the best recorded result for each module.</p>
+                        <div class="mastery-legend">
+                            <span class="legend-item"><span class="legend-dot" style="background-color: var(--accent-danger);"></span> Needs Improvement &lt;60%</span>
+                            <span class="legend-item"><span class="legend-dot" style="background-color: var(--accent-amber);"></span> Proficient 60&ndash;80%</span>
+                            <span class="legend-item"><span class="legend-dot" style="background-color: var(--accent-success);"></span> Mastered &gt;80%</span>
+                        </div>
+                        <div class="mastery-carousel">
+                            <div class="mastery-viewport">
+                                <div class="mastery-slides" id="mastery-list-container">
+                                    <!-- Slides populated via JS -->
+                                </div>
+                            </div>
+                            <button class="mastery-nav" id="mastery-prev" onclick="slideMastery(-1)" aria-label="Previous topic"><i class="ri-arrow-left-s-line"></i></button>
+                            <button class="mastery-nav" id="mastery-next" onclick="slideMastery(1)" aria-label="Next topic"><i class="ri-arrow-right-s-line"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: QUIZ INTERFACE -->
+        <section id="quiz-view" class="view-section">
+            <div class="quiz-meta-bar">
+                <div id="quiz-active-title" style="display: flex; align-items: center; gap: 0.5rem;"><i class="ri-book-2-line"></i> Module Title</div>
+                <div id="quiz-progress">Question <span id="current-q-num">1</span> of <span id="total-q-num">10</span></div>
+                <div id="quiz-timer"><i class="ri-time-line"></i> 00:00</div>
+            </div>
+
+            <div class="unanswered-warning" id="unanswered-warning">
+                <i class="ri-error-warning-line"></i> You haven't answered this question yet. Please select an option to continue.
+            </div>
+
+            <!-- Part indicator for multi-part ("paged") modules -->
+            <ol class="part-stepper" id="part-stepper" style="display: none;"></ol>
+
+            <!-- VIEW: single-question modules -->
+            <div class="question-card" id="single-question-card">
+                <div class="question-number" id="q-category-tag">Category</div>
+                <div class="question-text" id="question-text-container">Loading question...</div>
+                <div class="options-list" id="options-list-container">
+                    <!-- Options populated via JS -->
+                </div>
+            </div>
+
+            <!-- VIEW: multi-part modules (five questions per part page) -->
+            <div class="questions-page" id="questions-page" style="display: none;"></div>
+
+            <div class="quiz-controls">
+                <button class="btn btn-danger" onclick="exitExam()"><i class="ri-logout-box-r-line"></i> Exit Exam</button>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn" id="btn-prev" onclick="goToPrev()"><i class="ri-arrow-left-line"></i> Previous</button>
+                    <button class="btn btn-primary" id="btn-next" onclick="goToNext()">Next Question <i class="ri-arrow-right-line"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: RESULTS & REVIEW -->
+        <section id="results-view" class="view-section">
+            <div class="card results-summary-card">
+                <div class="tag" id="result-module-tag"><i class="ri-award-line"></i> Module Completed</div>
+                <h2>Abstract Exam Assessment Result</h2>
+                <div class="score-display" id="result-score-display">0/10 (0%)</div>
+                <div class="result-grade-row">
+                    <div class="grade-badge-display" id="result-grade-badge">Grade: 5.00</div>
+                    <p id="result-remark">Great effort!</p>
+                </div>
+                
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" id="btn-retake-exam" onclick="retakeCurrentExam()"><i class="ri-restart-line"></i> Retake & Shuffle Questions</button>
+                    <button class="btn" onclick="switchView('dashboard-view')"><i class="ri-dashboard-line"></i> Return to Modules</button>
+                </div>
+            </div>
+
+            <div class="results-review-grid">
+                <div class="card review-card">
+                    <div class="card-header">
+                        <h2>Detailed Answer Review &amp; Analytics</h2>
+                    </div>
+                    <div class="review-list" id="review-list-container">
+                        <!-- Populated via JS, grouped by Part 1 / Part 2 / Part 3 -->
+                    </div>
+                </div>
+
+                <aside class="results-side">
+                    <div class="side-card center">
+                        <div class="card-header" style="width: 100%;">
+                            <h2>Competency &amp; Accuracy Ratio</h2>
+                        </div>
+                        <p class="side-sub">Figures for this attempt only.</p>
+                        <div class="pie-wrapper" title="Hover to inspect competency rotation">
+                            <div class="pie-container" id="result-pie">
+                                <div class="pie-center-text" id="result-pie-percentage">0%</div>
+                            </div>
+                        </div>
+                        <div class="stats-breakdown">
+                            <div class="stat-row">
+                                <span>Average Grade</span>
+                                <strong id="result-stat-grade">5.00</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Items Reviewed</span>
+                                <strong id="result-stat-items">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span>Accuracy Ratio</span>
+                                <strong style="font-variant-numeric: tabular-nums;">
+                                    <span id="result-stat-correct" style="color: var(--accent-success);">0</span>
+                                    <span style="color: var(--text-secondary);">&nbsp;:&nbsp;</span>
+                                    <span id="result-stat-incorrect" style="color: var(--accent-danger);">0</span>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="side-card">
+                        <div class="card-header" style="width: 100%;">
+                            <h2>Topic Mastery</h2>
+                        </div>
+                        <p class="side-sub">Mastery for this attempt.</p>
+                        <div class="mastery-legend">
+                            <span class="legend-item"><span class="legend-dot" style="background-color: var(--accent-danger);"></span> Needs Improvement &lt;60%</span>
+                            <span class="legend-item"><span class="legend-dot" style="background-color: var(--accent-amber);"></span> Proficient 60&ndash;80%</span>
+                            <span class="legend-item"><span class="legend-dot" style="background-color: var(--accent-success);"></span> Mastered &gt;80%</span>
+                        </div>
+                        <div class="mastery-stack" id="result-mastery-list">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <div class="side-card">
+                        <div class="card-header" style="width: 100%;">
+                            <h2>Recommended Modules</h2>
+                        </div>
+                        <p class="side-sub">Unlocked from this result and not yet answered.</p>
+                        <div class="recommended-list" id="result-recommended-list">
+                            <!-- Populated via JS -->
+                        </div>
+                        <button class="btn btn-primary recommended-go" onclick="location.href='modules.html'"><i class="ri-layout-grid-line"></i> Go to Modules</button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER WITH CREDITS -->
+    <footer>
+        <div class="footer-content">
+            <p><strong>ATLAS</strong> &mdash; Abstract Testing &amp; Library Assessment System</p>
+            <p>4th Year BLIS &bull; Designed for Professional Board Licensure Preparation</p>
+            <p>Developed with Flat UI Principles, Remixicon, and Google Fonts (Sora & Inter).</p>
+            <p style="font-size: 0.75rem; color: var(--text-secondary);">&copy; 2026 4th Year Bachelor of Library and Information Science. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast-notification">Notification message</div>
+
+    <!-- SHARED ENGINE -->
+    <script src="exam-data.js"></script>
+    <script src="exam-app.js"></script>
+</body>
+</html>
