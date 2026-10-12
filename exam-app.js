@@ -148,6 +148,18 @@ function percentageToCollegeGrade(percentage) {
             updateAnalytics();
             renderHoverHistory();
 
+            // The lecture overlay closes on Esc, on the close button, or by
+            // clicking the dark tint around the player.
+            const lectureOverlay = document.getElementById('lecture-overlay');
+            if (lectureOverlay) {
+                lectureOverlay.addEventListener('click', event => {
+                    if (event.target === lectureOverlay) closeLecture();
+                });
+            }
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeLecture();
+            });
+
             const examListEl = document.getElementById('exam-list-container');
             if (examListEl) {
                 examListEl.addEventListener('scroll', updateExamListFade);
@@ -1390,7 +1402,8 @@ function percentageToCollegeGrade(percentage) {
                 .map(entry => entry.id);
         }
 
-        // Play a lecture in place of its thumbnail (nothing leaves the site).
+        // Play a lecture in the centred overlay — bigger picture, dark-tinted
+        // backdrop, playback starting straight away (nothing leaves the site).
         function playLecture(button) {
             const row = button.closest('.lecture');
             if (!row) return;
@@ -1402,18 +1415,53 @@ function percentageToCollegeGrade(percentage) {
             const match = /\/vi\/([A-Za-z0-9_-]{11})\//.exec(img.getAttribute('src') || '');
             if (!match) return;
 
-            const player = document.createElement('div');
-            player.className = 'lecture-player';
+            if (isLocalFileMode()) {
+                window.open(`https://www.youtube.com/watch?v=${match[1]}`, '_blank', 'noopener');
+                return;
+            }
 
+            openLectureOverlay(match[1], titleEl ? titleEl.textContent : 'Video lecture');
+        }
+
+        function openLectureOverlay(videoId, title) {
+            const overlay = document.getElementById('lecture-overlay');
+            const holder = document.getElementById('lecture-overlay-player');
+            const titleEl = document.getElementById('lecture-overlay-title');
+
+            if (!overlay || !holder) {
+                window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener');
+                return;
+            }
+
+            holder.innerHTML = '';
             const frame = document.createElement('iframe');
-            frame.src = `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0&playsinline=1`;
-            frame.title = titleEl ? titleEl.textContent : 'Video lecture';
-            frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+            frame.title = title;
+            frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
             frame.setAttribute('allowfullscreen', '');
-            player.appendChild(frame);
+            holder.appendChild(frame);
 
-            row.innerHTML = '';
-            row.appendChild(player);
+            if (titleEl) titleEl.textContent = title;
+
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('overlay-open');
+
+            const close = overlay.querySelector('.lecture-overlay-close');
+            if (close && typeof close.focus === 'function') close.focus();
+        }
+
+        function closeLecture() {
+            const overlay = document.getElementById('lecture-overlay');
+            if (!overlay || !overlay.classList.contains('open')) return;
+
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('overlay-open');
+
+            // Clearing the holder stops the video instead of letting it play on
+            const holder = document.getElementById('lecture-overlay-player');
+            if (holder) holder.innerHTML = '';
         }
 
         // Re-open the saved (and only) main module result — repeatable at will

@@ -301,6 +301,17 @@
 
     <div class="toast" id="toast-notification">Notification message</div>
 
+    <!-- LECTURE OVERLAY: dark-tinted backdrop, centred and larger player -->
+    <div class="lecture-overlay" id="lecture-overlay" aria-hidden="true">
+        <div class="lecture-overlay-box" role="dialog" aria-modal="true" aria-label="Video lecture">
+            <div class="lecture-overlay-player" id="lecture-overlay-player"></div>
+            <p class="lecture-overlay-title" id="lecture-overlay-title"></p>
+            <button class="lecture-overlay-close" type="button" onclick="closeLecture()" aria-label="Close video">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- SHARED ENGINE -->
     <script src="exam-data.js"></script>
     <script src="exam-app.js"></script>

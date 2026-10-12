@@ -303,6 +303,205 @@
         footer strong { color: var(--text-primary); font-family: var(--font-heading); }
 
         /* ============================================================
+           VIDEO LECTURES — carousel of real YouTube lectures, played in a
+           centred overlay so nobody is sent off to YouTube
+           ============================================================ */
+        .lecture-carousel {
+            position: relative;
+            padding: 0 2.25rem;
+        }
+
+        .lecture-viewport {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: 0.25rem 0;
+            /* The arrows are the control, so the bar stays hidden */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .lecture-viewport::-webkit-scrollbar { display: none; }
+
+        .lecture-card {
+            flex: 0 0 auto;
+            width: 300px;
+            max-width: 76vw;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            padding: 0.6rem;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius);
+            background-color: var(--surface-muted);
+            color: inherit;
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .lecture-card:hover {
+            background-color: var(--surface-color);
+            border-color: var(--border-color);
+        }
+
+        .lecture-card:focus-visible {
+            outline: 2px solid var(--text-primary);
+            outline-offset: 2px;
+        }
+
+        .lecture-frame {
+            position: relative;
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--surface-color);
+            overflow: hidden;
+        }
+
+        .lecture-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+        .lecture-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: rgba(30, 41, 59, 0.85);
+            color: #FFFFFF;
+            font-size: 1rem;
+        }
+
+        .lecture-name {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .lecture-source {
+            display: block;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .lecture-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background-color: transparent;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background-color 0.25s ease, opacity 0.25s ease;
+        }
+
+        .lecture-nav:hover:not(:disabled) { background-color: var(--surface-muted); }
+        .lecture-nav:disabled { opacity: 0; pointer-events: none; }
+        .lecture-nav.prev { left: 0; }
+        .lecture-nav.next { right: 0; }
+
+        .lecture-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.45rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.72rem;
+            line-height: 1.45;
+            color: var(--text-secondary);
+        }
+
+        .lecture-note i { flex-shrink: 0; margin-top: 0.1rem; font-size: 0.9rem; }
+        .lecture-note strong { font-family: var(--font-heading); font-weight: 600; color: var(--text-primary); }
+
+        /* Centred player overlay: dark tint, big picture, playback on open */
+        .lecture-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: rgba(15, 23, 42, 0.78);
+        }
+
+        .lecture-overlay.open { display: flex; animation: lectureOverlayIn 0.25s ease both; }
+
+        @keyframes lectureOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .lecture-overlay-box { position: relative; width: 100%; max-width: 1040px; }
+
+        .lecture-overlay-player {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #0F172A;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .lecture-overlay-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+        .lecture-overlay-title {
+            margin-top: 0.8rem;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+
+        .lecture-overlay-close {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(15, 23, 42, 0.72);
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+        }
+
+        .lecture-overlay-close:hover { background-color: #0F172A; }
+
+        body.overlay-open { overflow: hidden; }
+
+        /* ============================================================
            RESPONSIVE / MOBILE  (kept last so it overrides the base rules)
            ============================================================ */
         @media (max-width: 768px) {
@@ -339,6 +538,10 @@
             }
 
             .lib-grid { grid-template-columns: 1fr; }
+
+            /* Videos: tighter rails on small screens */
+            .lecture-carousel { padding: 0 1.75rem; }
+            .lecture-overlay { padding: 1rem; }
 
             footer { padding: 1.25rem 1rem; }
 
@@ -415,6 +618,25 @@
             A curated shelf of LLE reviewers, practice portals, downloadable reviewer packages, and digital document
             repositories for 4th Year BLIS students. Select a card to open the resource in a new tab.
         </p>
+
+        <!-- Video lectures: the curated YouTube set, played in a centred overlay -->
+        <section class="lib-section">
+            <div class="lib-section-head">
+                <i class="ri-play-circle-line"></i>
+                <h2>Video Lectures</h2>
+            </div>
+            <div class="lecture-carousel" id="lecture-carousel">
+                <div class="lecture-viewport" id="lecture-viewport">
+                    <!-- Cards are built from LEARNING_VIDEOS (exam-data.js) -->
+                </div>
+                <button class="lecture-nav prev" id="lecture-prev" type="button" onclick="slideLecture(-1)" aria-label="Previous lectures">
+                    <i class="ri-arrow-left-s-line"></i>
+                </button>
+                <button class="lecture-nav next" id="lecture-next" type="button" onclick="slideLecture(1)" aria-label="Next lectures">
+                    <i class="ri-arrow-right-s-line"></i>
+                </button>
+            </div>
+        </section>
 
         <!-- 1. Interactive Practice & Portal Tools -->
         <section class="lib-section">
@@ -510,6 +732,20 @@
         </div>
     </footer>
 
+    <!-- LECTURE OVERLAY: dark-tinted backdrop, centred and larger player -->
+    <div class="lecture-overlay" id="lecture-overlay" aria-hidden="true">
+        <div class="lecture-overlay-box" role="dialog" aria-modal="true" aria-label="Video lecture">
+            <div class="lecture-overlay-player" id="lecture-overlay-player"></div>
+            <p class="lecture-overlay-title" id="lecture-overlay-title"></p>
+            <button class="lecture-overlay-close" type="button" onclick="closeLecture()" aria-label="Close video">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Curated lecture data (LEARNING_VIDEOS) -->
+    <script src="exam-data.js"></script>
+
     <script>
         function getAttemptsHistory() {
             const data = localStorage.getItem('cspc_blis_exam_history');
@@ -568,7 +804,126 @@
             });
         }
 
-        window.addEventListener('DOMContentLoaded', renderHoverHistory);
+        // ============================================================
+        //  VIDEO LECTURES — curated YouTube set (LEARNING_VIDEOS), laid out as a
+        //  carousel. A lecture plays in a centred overlay with a dark tint, so
+        //  the reader never has to leave the site.
+        // ============================================================
+        function isLocalFileMode() {
+            return location.protocol === 'file:';
+        }
+
+        function renderLectureCarousel() {
+            const track = document.getElementById('lecture-viewport');
+            if (!track || typeof LEARNING_VIDEOS === 'undefined') return;
+
+            LEARNING_VIDEOS.forEach(video => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.className = 'lecture-card';
+                card.innerHTML = `
+                    <span class="lecture-frame">
+                        <img src="https://i.ytimg.com/vi/${video.id}/mqdefault.jpg" alt="" loading="lazy">
+                        <span class="lecture-badge"><i class="ri-play-fill"></i></span>
+                    </span>
+                    <span class="lecture-name">${video.title}</span>
+                    <span class="lecture-source">${video.channel} &middot; YouTube</span>
+                `;
+                card.addEventListener('click', () => openLectureOverlay(video.id, video.title));
+                track.appendChild(card);
+            });
+
+            // Straight from disk the player cannot work, so say why
+            if (isLocalFileMode()) {
+                const note = document.createElement('p');
+                note.className = 'lecture-note';
+                note.innerHTML = '<i class="ri-error-warning-line"></i><span>YouTube blocks in-page playback when the site is opened straight from disk (error 153). Host the site (or run it through <strong>Start ATLAS.bat</strong>) to watch lectures here &mdash; for now a lecture opens on YouTube.</span>';
+                const carousel = document.getElementById('lecture-carousel');
+                if (carousel) carousel.parentNode.insertBefore(note, carousel);
+            }
+
+            updateLectureNav();
+        }
+
+        // Move the rail by one card, whichever card size the viewport allows
+        function slideLecture(direction) {
+            const viewport = document.getElementById('lecture-viewport');
+            if (!viewport) return;
+
+            const card = viewport.querySelector('.lecture-card');
+            const step = card ? card.getBoundingClientRect().width + 16 : viewport.clientWidth * 0.8;
+            viewport.scrollBy({ left: step * direction, behavior: 'smooth' });
+        }
+
+        function updateLectureNav() {
+            const viewport = document.getElementById('lecture-viewport');
+            const prev = document.getElementById('lecture-prev');
+            const next = document.getElementById('lecture-next');
+            if (!viewport || !prev || !next) return;
+
+            const max = viewport.scrollWidth - viewport.clientWidth - 1;
+            prev.disabled = viewport.scrollLeft <= 1;
+            next.disabled = viewport.scrollLeft >= max;
+        }
+
+        function openLectureOverlay(videoId, title) {
+            const overlay = document.getElementById('lecture-overlay');
+            const holder = document.getElementById('lecture-overlay-player');
+            const titleEl = document.getElementById('lecture-overlay-title');
+
+            if (isLocalFileMode() || !overlay || !holder) {
+                window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank', 'noopener');
+                return;
+            }
+
+            holder.innerHTML = '';
+            const frame = document.createElement('iframe');
+            frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+            frame.title = title;
+            frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+            frame.setAttribute('allowfullscreen', '');
+            holder.appendChild(frame);
+
+            if (titleEl) titleEl.textContent = title;
+
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('overlay-open');
+
+            const close = overlay.querySelector('.lecture-overlay-close');
+            if (close && typeof close.focus === 'function') close.focus();
+        }
+
+        function closeLecture() {
+            const overlay = document.getElementById('lecture-overlay');
+            if (!overlay || !overlay.classList.contains('open')) return;
+
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('overlay-open');
+
+            // Clearing the holder stops the video instead of letting it play on
+            const holder = document.getElementById('lecture-overlay-player');
+            if (holder) holder.innerHTML = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHoverHistory();
+            renderLectureCarousel();
+
+            const viewport = document.getElementById('lecture-viewport');
+            if (viewport) viewport.addEventListener('scroll', updateLectureNav);
+
+            const overlay = document.getElementById('lecture-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', event => {
+                    if (event.target === overlay) closeLecture();
+                });
+            }
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') closeLecture();
+            });
+        });
     </script>
 </body>
 </html>
