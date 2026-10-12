@@ -1247,7 +1247,7 @@ function percentageToCollegeGrade(percentage) {
         }
 
         // The panels shown beside the detailed review: competency & accuracy for
-        // this attempt, topic mastery and the recommended modules.
+        // this attempt, topic mastery, and the learning materials that suit it.
         function renderResultSidePanels(record) {
             const pieEl = document.getElementById('result-pie');
             if (!pieEl) return; // this page has no results side panels
@@ -1297,52 +1297,123 @@ function percentageToCollegeGrade(percentage) {
                 });
             }
 
-            renderRecommendedModules();
+            renderResultLearningMaterials();
+            renderResultLectures(record);
         }
 
-        function renderRecommendedModules() {
-            const list = document.getElementById('result-recommended-list');
-            if (!list) return;
+        // Learning materials beside the review: the resources the Review Library
+        // curates (library.html), reused here for the result being looked at.
+        function renderResultLearningMaterials() {
+            const list = document.getElementById('result-material-list');
+            if (!list || typeof LEARNING_MATERIALS === 'undefined') return;
 
-            const ids = getRecommendedModuleIds();
             list.innerHTML = '';
-            list.style.maxHeight = '';
-
-            if (ids.length === 0) {
-                list.innerHTML = '<p class="side-empty"><i class="ri-check-double-line"></i> Nothing left to recommend from this result &mdash; open the Modules page and pick any unlocked module.</p>';
-                return;
-            }
-
-            ids.forEach(id => {
-                const mod = examModules.find(m => m.id === id);
-                if (!mod) return;
-
-                const topics = (typeof TRIAL_MODULE_TOPICS !== 'undefined' && TRIAL_MODULE_TOPICS[mod.id]) || [];
-                const topicText = topics.map(topic => escapeHtmlText(topic)).join(', ');
-
-                const item = document.createElement('div');
-                item.className = 'recommended-item';
-                item.innerHTML = `
-                    <i class="ri-star-line"></i>
-                    <span class="recommended-item-body">
-                        <span class="recommended-item-title">${escapeHtmlText(mod.title)}</span>
-                        ${topicText ? `<span class="recommended-item-sub">${topicText}</span>` : ''}
-                    </span>
+            LEARNING_MATERIALS.forEach(material => {
+                const link = document.createElement('a');
+                link.className = 'material-item';
+                link.href = material.url;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.innerHTML = `
+                    <span class="material-tag">${escapeHtmlText(material.tag)}</span>
+                    <span class="material-title">${escapeHtmlText(material.title)}</span>
+                    <i class="ri-arrow-right-up-line"></i>
                 `;
-                list.appendChild(item);
+                list.appendChild(link);
+            });
+        }
+
+        // A page opened straight from disk (file://...) sends no referrer at all,
+        // and YouTube refuses to hand out an embedded player without one — that
+        // is "error 153". Running the site over http://localhost (Start ATLAS.bat)
+        // gives it a real origin, and the lectures then play inside the page.
+        function isLocalFileMode() {
+            return location.protocol === 'file:';
+        }
+
+        // Video lectures beside the review: real YouTube videos, embedded in the
+        // page itself. Clicking a row swaps in the player, so watching a lecture
+        // never sends anyone to YouTube.
+        function renderResultLectures(record) {
+            const list = document.getElementById('result-video-list');
+            if (!list || typeof LEARNING_VIDEOS === 'undefined') return;
+
+            list.innerHTML = '';
+            pickLectureIds(record).forEach(id => {
+                const video = LEARNING_VIDEOS.find(item => item.id === id);
+                if (!video) return;
+
+                const row = document.createElement('div');
+                row.className = 'lecture';
+                row.innerHTML = `
+                    <button class="lecture-hit" type="button" onclick="playLecture(this)">
+                        <span class="lecture-thumb">
+                            <img src="https://i.ytimg.com/vi/${video.id}/mqdefault.jpg" alt="" loading="lazy">
+                            <span class="lecture-play"><i class="ri-play-fill"></i></span>
+                        </span>
+                        <span class="lecture-meta">
+                            <span class="lecture-title">${escapeHtmlText(video.title)}</span>
+                            <span class="lecture-channel">${escapeHtmlText(video.channel)} &middot; YouTube</span>
+                        </span>
+                    </button>
+                `;
+                list.appendChild(row);
             });
 
-            // Show at most three modules at a time; the rest scroll into view
-            const fitThree = () => {
-                if (list.children.length <= 3) return;
-                const items = list.children;
-                const threeItems = items[2].offsetTop - items[0].offsetTop + items[2].offsetHeight;
-                if (threeItems > 0) list.style.maxHeight = Math.ceil(threeItems) + 'px';
-            };
-            fitThree();
-            // Measured again once the results view is actually laid out
-            if (typeof requestAnimationFrame === 'function') requestAnimationFrame(fitThree);
-            setTimeout(fitThree, 0);
+            // When the pages are opened from disk the player cannot work, so say
+            // why and point at the launcher that fixes it.
+            if (isLocalFileMode()) {
+                const note = document.createElement('p');
+                note.className = 'lecture-note';
+                note.innerHTML = '<i class="ri-error-warning-line"></i><span>YouTube blocks in-page playback when the site is opened straight from disk (error 153). Start it with <strong>Start ATLAS.bat</strong> to watch lectures here &mdash; until then a lecture opens on YouTube.</span>';
+                list.parentNode.insertBefore(note, list);
+            }
+        }
+
+        // Which lectures to show: the topics this attempt was weakest in decide
+        // the order of preference, and the three best-fitting lectures are shown.
+        function pickLectureIds(record) {
+            const mod = examModules.find(m => m.id === record.moduleId);
+            const byParts = !!(mod && Array.isArray(mod.parts) && mod.parts.length);
+            const weakTopics = groupDetails(record, byParts ? 'part' : 'category')
+                .filter(group => group.pct < UNLOCK_THRESHOLD)
+                .map(group => group.name.toLowerCase())
+                .join(' ');
+
+            const score = video => video.tags.reduce(
+                (total, tag) => total + (weakTopics.indexOf(tag) !== -1 ? 1 : 0), 0);
+
+            return LEARNING_VIDEOS
+                .map((video, index) => ({ id: video.id, score: score(video), order: index }))
+                .sort((a, b) => (b.score - a.score) || (a.order - b.order))
+                .slice(0, 3)
+                .map(entry => entry.id);
+        }
+
+        // Play a lecture in place of its thumbnail (nothing leaves the site).
+        function playLecture(button) {
+            const row = button.closest('.lecture');
+            if (!row) return;
+
+            const img = row.querySelector('.lecture-thumb img');
+            const titleEl = row.querySelector('.lecture-title');
+            if (!img) return;
+
+            const match = /\/vi\/([A-Za-z0-9_-]{11})\//.exec(img.getAttribute('src') || '');
+            if (!match) return;
+
+            const player = document.createElement('div');
+            player.className = 'lecture-player';
+
+            const frame = document.createElement('iframe');
+            frame.src = `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0&playsinline=1`;
+            frame.title = titleEl ? titleEl.textContent : 'Video lecture';
+            frame.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+            frame.setAttribute('allowfullscreen', '');
+            player.appendChild(frame);
+
+            row.innerHTML = '';
+            row.appendChild(player);
         }
 
         // Re-open the saved (and only) main module result — repeatable at will

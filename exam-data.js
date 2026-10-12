@@ -906,3 +906,107 @@ const MAIN_PART_BLURBS = {
     "Challenges in Abstracting":
         "The difficult cases &mdash; accuracy versus brevity, bias, ethics, copyright, and consistency across a whole collection."
 };
+
+// ---------------------------------------------------------------------------
+// Recommended learning materials: the same resources the Review Library
+// (library.html) curates, reused beside a result so a weak attempt points
+// straight at study material.
+// ---------------------------------------------------------------------------
+const LEARNING_MATERIALS = [
+    {
+        tag: "Practice",
+        title: "PRC Board Reviewers PH Practice Sets",
+        url: "https://prcboardreviewersph.com/lle-reviewers"
+    },
+    {
+        tag: "Portal",
+        title: "National Library of the Philippines Learning Portal",
+        url: "https://learningportal.nlp.gov.ph/"
+    },
+    {
+        tag: "Download",
+        title: "BSU 2021 Free LLE Reviewer Package",
+        url: "https://tiny.one/2zawvbcb"
+    },
+    {
+        tag: "Download",
+        title: "BSU 2022 Free LLE Reviewer Extension",
+        url: "https://bit.ly/3m6i2RL"
+    },
+    {
+        tag: "Printable",
+        title: "Printable Answer Tracking Sheets",
+        url: "https://bit.ly/3JGBaAH"
+    },
+    {
+        tag: "PDF",
+        title: "Library and Information Science Reviewer (12 Units)",
+        url: "https://www.scribd.com/document/317123232/Library-and-Information-Science-Reviewer"
+    },
+    {
+        tag: "PDF",
+        title: "LLE Reviewer for Librarians Exam (235 Pages)",
+        url: "https://www.scribd.com/document/662156936/LLE-Reviewer-2022-1"
+    },
+    {
+        tag: "Mock Test",
+        title: "Pre-Board Exam for Organization, Management, and Laws",
+        url: "https://www.scribd.com/document/707099476/Pre-Board-Exam-for-Org-Management-and-Laws-With-Key-Answers-docx"
+    },
+    {
+        tag: "Study Guide",
+        title: "LLE Board Exam Syllabus Review Notes Outline",
+        url: "https://www.docsity.com/en/docs/review-notes-for-the-lle-board-exam/2186974/"
+    }
+];
+
+// ---------------------------------------------------------------------------
+// Video lectures: real, embeddable YouTube videos that play inside the site
+// (see playLecture in exam-app.js) so nobody is sent off to YouTube.
+// `tags` are matched against the topics of an attempt; the lectures covering
+// the weakest topics are floated to the top of the recommendations.
+// ---------------------------------------------------------------------------
+const LEARNING_VIDEOS = [
+    {
+        id: "XMe1QSxh9hk",
+        title: "Indexes and Abstracts: The Basics for Filipino Librarians and LIS Students",
+        channel: "Malditang Librarian",
+        tags: ["abstract", "index", "condens", "summar", "editing", "citation", "bibliometr", "scientometr", "accuracy", "objectiv", "coverage"]
+    },
+    {
+        id: "cF232UMmErw",
+        title: "Review and Preparation for the LLE",
+        channel: "BLISS Organization",
+        tags: ["review", "licensur", "professional", "management", "organization", "collection", "acquisit", "budget", "human resources", "law", "reference", "literacy", "weeding", "serials", "audit"]
+    },
+    {
+        id: "puGnMbBcSfs",
+        title: "Reviewers and Books I Used to Pass the Librarians Licensure Exam",
+        channel: "Malditang Librarian",
+        tags: ["review", "reference", "collection", "licensur", "selection", "current awareness"]
+    },
+    {
+        id: "1Y7HJjkNyrQ",
+        title: "Dewey Decimal Classification System: How Books Are Arranged in the Library",
+        channel: "RGULibrary",
+        tags: ["classif", "catalog", "dewey", "marc", "metadata", "authority", "subject", "taxonom", "linked", "interoperab", "ontolog", "preserv"]
+    },
+    {
+        id: "RNEDEk1Tz4Y",
+        title: "How to Understand the Dewey Decimal System",
+        channel: "Howcast",
+        tags: ["classif", "dewey", "catalog", "subject", "shelf"]
+    },
+    {
+        id: "WQUTb4Hc9NM",
+        title: "Self Review Tips for the Board Exam: How to Start Self Reviewing",
+        channel: "Malditang Librarian",
+        tags: ["review", "study", "research", "evaluation", "assessment", "reading"]
+    },
+    {
+        id: "fAPpBYLrJAc",
+        title: "Top 10 Tips on Passing the Board Exam from a Topnotcher",
+        channel: "Malditang Librarian",
+        tags: ["review", "tips", "licensur", "exam", "time management"]
+    }
+];

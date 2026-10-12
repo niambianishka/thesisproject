@@ -263,13 +263,25 @@
 
                     <div class="side-card">
                         <div class="card-header" style="width: 100%;">
-                            <h2>Recommended Modules</h2>
+                            <h2>Recommended Learning Materials &amp; Video Lectures</h2>
                         </div>
-                        <p class="side-sub">Unlocked from this result and not yet answered.</p>
-                        <div class="recommended-list" id="result-recommended-list">
-                            <!-- Populated via JS -->
+                        <p class="side-sub">Picked from the Review Library and YouTube for this result.</p>
+
+                        <div class="learn-block">
+                            <div class="learn-block-head"><i class="ri-book-2-line"></i> Learning Materials</div>
+                            <div class="material-list" id="result-material-list">
+                                <!-- Populated via JS from the Review Library -->
+                            </div>
                         </div>
-                        <button class="btn btn-primary recommended-go" onclick="location.href='modules.html'"><i class="ri-layout-grid-line"></i> Go to Modules</button>
+
+                        <div class="learn-block">
+                            <div class="learn-block-head"><i class="ri-play-circle-line"></i> Video Lectures</div>
+                            <div class="lecture-list" id="result-video-list">
+                                <!-- Populated via JS; each lecture plays inline, right here -->
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary recommended-go" onclick="location.href='library.html'"><i class="ri-book-2-line"></i> Open the Review Library</button>
                     </div>
                 </aside>
             </div>
