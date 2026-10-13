@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATLAS — Abstract Testing &amp; Library Assessment System</title>
+    <title>ATLAS — Abstracting Test and LIS Assessment System</title>
     <!-- Google Fonts: Sora (Headers) & Inter (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,7 +121,7 @@
                 <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                     <button class="btn btn-primary" id="btn-retake-exam" onclick="retakeCurrentExam()"><i class="ri-restart-line"></i> Retake & Shuffle Questions</button>
                     <button class="btn" id="btn-print-result" onclick="printResult()" style="display: none;"><i class="ri-printer-line"></i> Print Result (A4 PDF)</button>
-                    <button class="btn" onclick="switchView('dashboard-view')"><i class="ri-dashboard-line"></i> Return to Dashboard</button>
+                    <button class="btn" onclick="location.href='modules.html'"><i class="ri-list-check-2"></i> Try Trial Modules</button>
                 </div>
                 <p id="result-once-note" style="display: none; margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-secondary);">
                     <i class="ri-lock-line"></i> The main module is a one-time assessment &mdash; it cannot be retaken. You may print or save this result and view it again anytime.
@@ -188,7 +188,7 @@
                         <div class="card-header" style="width: 100%;">
                             <h2>Recommended Learning Materials &amp; Video Lectures</h2>
                         </div>
-                        <p class="side-sub">Picked from the Review Library and YouTube for this result.</p>
+                        <p class="side-sub">Matched to the topics this attempt was weakest in.</p>
 
                         <div class="learn-block">
                             <div class="learn-block-head"><i class="ri-book-2-line"></i> Learning Materials</div>
@@ -215,9 +215,8 @@
     <!-- FOOTER WITH CREDITS -->
     <footer>
         <div class="footer-content">
-            <p><strong>ATLAS</strong> &mdash; Abstract Testing &amp; Library Assessment System</p>
+            <p><strong>ATLAS</strong> &mdash; Abstracting Test and LIS Assessment System</p>
             <p>4th Year BLIS &bull; Designed for Professional Board Licensure Preparation</p>
-            <p>Developed with Flat UI Principles, Remixicon, and Google Fonts (Sora & Inter).</p>
             <p style="font-size: 0.75rem; color: var(--text-secondary);">&copy; 2026 4th Year Bachelor of Library and Information Science. All rights reserved.</p>
         </div>
     </footer>

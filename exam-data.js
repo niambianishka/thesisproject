@@ -912,51 +912,66 @@ const MAIN_PART_BLURBS = {
 // (library.html) curates, reused beside a result so a weak attempt points
 // straight at study material.
 // ---------------------------------------------------------------------------
+// `topics` are matched against the topics an attempt was weakest in, so only
+// the material that suits that attempt is put beside its result. Resources
+// marked `general` are the all-purpose ones, used only to fill a gap when
+// nothing matches more precisely.
 const LEARNING_MATERIALS = [
     {
         tag: "Practice",
         title: "PRC Board Reviewers PH Practice Sets",
-        url: "https://prcboardreviewersph.com/lle-reviewers"
+        url: "https://prcboardreviewersph.com/lle-reviewers",
+        general: true,
+        topics: ["practice", "mock", "assess", "review", "exam", "board", "licensur"]
     },
     {
         tag: "Portal",
         title: "National Library of the Philippines Learning Portal",
-        url: "https://learningportal.nlp.gov.ph/"
+        url: "https://learningportal.nlp.gov.ph/",
+        topics: ["reference", "literac", "collection", "digital", "preservation", "repositor", "curation", "acquisit", "weeding", "serials"]
     },
     {
         tag: "Download",
         title: "BSU 2021 Free LLE Reviewer Package",
-        url: "https://tiny.one/2zawvbcb"
+        url: "https://tiny.one/2zawvbcb",
+        topics: ["abstract", "index", "catalog", "classif", "reference", "collection", "management", "metadata", "bibliograph"]
     },
     {
         tag: "Download",
         title: "BSU 2022 Free LLE Reviewer Extension",
-        url: "https://bit.ly/3m6i2RL"
+        url: "https://bit.ly/3m6i2RL",
+        topics: ["abstract", "index", "catalog", "classif", "reference", "collection", "management", "metadata", "bibliograph"]
     },
     {
         tag: "Printable",
         title: "Printable Answer Tracking Sheets",
-        url: "https://bit.ly/3JGBaAH"
+        url: "https://bit.ly/3JGBaAH",
+        topics: ["time management", "study", "review", "practice", "assessment", "tracking"]
     },
     {
         tag: "PDF",
         title: "Library and Information Science Reviewer (12 Units)",
-        url: "https://www.scribd.com/document/317123232/Library-and-Information-Science-Reviewer"
+        url: "https://www.scribd.com/document/317123232/Library-and-Information-Science-Reviewer",
+        topics: ["abstract", "index", "catalog", "classif", "reference", "collection", "management", "metadata", "bibliograph", "preserv", "law", "ethic", "literac"]
     },
     {
         tag: "PDF",
         title: "LLE Reviewer for Librarians Exam (235 Pages)",
-        url: "https://www.scribd.com/document/662156936/LLE-Reviewer-2022-1"
+        url: "https://www.scribd.com/document/662156936/LLE-Reviewer-2022-1",
+        topics: ["abstract", "index", "catalog", "classif", "metadata", "preserv", "bibliometr", "management", "law", "reference", "collection", "knowledge"]
     },
     {
         tag: "Mock Test",
         title: "Pre-Board Exam for Organization, Management, and Laws",
-        url: "https://www.scribd.com/document/707099476/Pre-Board-Exam-for-Org-Management-and-Laws-With-Key-Answers-docx"
+        url: "https://www.scribd.com/document/707099476/Pre-Board-Exam-for-Org-Management-and-Laws-With-Key-Answers-docx",
+        topics: ["management", "organization", "law", "ethic", "copyright", "budget", "human resource", "governance", "administration", "audit", "regulation"]
     },
     {
         tag: "Study Guide",
         title: "LLE Board Exam Syllabus Review Notes Outline",
-        url: "https://www.docsity.com/en/docs/review-notes-for-the-lle-board-exam/2186974/"
+        url: "https://www.docsity.com/en/docs/review-notes-for-the-lle-board-exam/2186974/",
+        general: true,
+        topics: ["review", "syllabus", "standard", "assessment", "licensur", "exam", "time management"]
     }
 ];
 
@@ -977,6 +992,7 @@ const LEARNING_VIDEOS = [
         id: "cF232UMmErw",
         title: "Review and Preparation for the LLE",
         channel: "BLISS Organization",
+        general: true,
         tags: ["review", "licensur", "professional", "management", "organization", "collection", "acquisit", "budget", "human resources", "law", "reference", "literacy", "weeding", "serials", "audit"]
     },
     {
@@ -1001,12 +1017,14 @@ const LEARNING_VIDEOS = [
         id: "WQUTb4Hc9NM",
         title: "Self Review Tips for the Board Exam: How to Start Self Reviewing",
         channel: "Malditang Librarian",
+        general: true,
         tags: ["review", "study", "research", "evaluation", "assessment", "reading"]
     },
     {
         id: "fAPpBYLrJAc",
         title: "Top 10 Tips on Passing the Board Exam from a Topnotcher",
         channel: "Malditang Librarian",
+        general: true,
         tags: ["review", "tips", "licensur", "exam", "time management"]
     }
 ];

@@ -525,10 +525,6 @@ function percentageToCollegeGrade(percentage) {
                     </li>`;
             }).join('');
 
-            const note = taken
-                ? 'Your result, grade and A4 printable report stay available any time.'
-                : 'Finish all three parts to unlock the trial modules matched to your result.';
-
             const hero = document.createElement('article');
             hero.className = 'main-hero';
             hero.innerHTML = `
@@ -548,7 +544,6 @@ function percentageToCollegeGrade(percentage) {
 
                     <div class="hero-actions">
                         ${buttonHtml}
-                        <span class="hero-note">${note}</span>
                     </div>
                 </div>
 
@@ -1309,18 +1304,76 @@ function percentageToCollegeGrade(percentage) {
                 });
             }
 
-            renderResultLearningMaterials();
+            renderResultLearningMaterials(record);
             renderResultLectures(record);
         }
 
-        // Learning materials beside the review: the resources the Review Library
-        // curates (library.html), reused here for the result being looked at.
-        function renderResultLearningMaterials() {
+        // What an attempt was weakest in: the module's own domain, the topics
+        // under the mastery threshold, and the categories of the questions that
+        // were actually answered wrong. Everything recommended comes from here.
+        function getWeakAreas(record) {
+            const mod = examModules.find(m => m.id === record.moduleId);
+            const byParts = !!(mod && Array.isArray(mod.parts) && mod.parts.length);
+            const weak = groupDetails(record, byParts ? 'part' : 'category')
+                .filter(group => group.pct < UNLOCK_THRESHOLD);
+            const missed = (record.details || [])
+                .filter(detail => !detail.isCorrect && detail.category)
+                .map(detail => detail.category);
+
+            const words = [];
+            if (mod) words.push(mod.title);
+            weak.forEach(group => words.push(group.name));
+            missed.forEach(category => words.push(category));
+
+            return {
+                needsWork: weak.length > 0 || missed.length > 0,
+                text: words.join(' ').toLowerCase()
+            };
+        }
+
+        // Rank materials or lectures against those weak areas: the closest fits
+        // come first, a general resource only fills a gap, and no more than a
+        // short panel of `limit` rows is ever shown.
+        function rankByWeakAreas(items, text, limit) {
+            const scoreOf = tags => (tags || []).reduce(
+                (total, tag) => total + (text.indexOf(tag) !== -1 ? 1 : 0), 0);
+
+            const ranked = items
+                .map((item, index) => ({ item: item, score: scoreOf(item.topics || item.tags), order: index }))
+                .sort((a, b) => (b.score - a.score) || (a.order - b.order));
+
+            const picked = ranked.filter(entry => entry.score > 0).slice(0, limit);
+
+            if (picked.length < 2) {
+                ranked.forEach(entry => {
+                    if (picked.length >= 2 || !entry.item.general) return;
+                    if (picked.indexOf(entry) === -1) picked.push(entry);
+                });
+            }
+
+            return picked.slice(0, limit).map(entry => entry.item);
+        }
+
+        // Nothing to review: said in one line, instead of listing the library.
+        function emptyRecommendation(list, message) {
+            list.innerHTML = `<p class="learn-empty"><i class="ri-checkbox-circle-line"></i> ${message}</p>`;
+        }
+
+        // Learning materials beside the review: only the resources that answer
+        // the weak topics of the result being looked at (library.html curates
+        // the full set; this shows what is needed).
+        function renderResultLearningMaterials(record) {
             const list = document.getElementById('result-material-list');
             if (!list || typeof LEARNING_MATERIALS === 'undefined') return;
 
             list.innerHTML = '';
-            LEARNING_MATERIALS.forEach(material => {
+            const areas = getWeakAreas(record);
+            if (!areas.needsWork) {
+                emptyRecommendation(list, 'Every topic in this attempt is at or above the mastery mark &mdash; nothing extra to review.');
+                return;
+            }
+
+            rankByWeakAreas(LEARNING_MATERIALS, areas.text, 3).forEach(material => {
                 const link = document.createElement('a');
                 link.className = 'material-item';
                 link.href = material.url;
@@ -1337,69 +1390,51 @@ function percentageToCollegeGrade(percentage) {
 
         // A page opened straight from disk (file://...) sends no referrer at all,
         // and YouTube refuses to hand out an embedded player without one — that
-        // is "error 153". Running the site over http://localhost (Start ATLAS.bat)
-        // gives it a real origin, and the lectures then play inside the page.
+        // is "error 153". Served from a real address (the hosted copy, or any
+        // http server) the pages get an origin, and the lectures play in-page.
         function isLocalFileMode() {
             return location.protocol === 'file:';
         }
 
         // Video lectures beside the review: real YouTube videos, embedded in the
-        // page itself. Clicking a row swaps in the player, so watching a lecture
-        // never sends anyone to YouTube.
+        // page itself. Clicking a row opens the centred player, so watching a
+        // lecture never sends anyone to YouTube.
         function renderResultLectures(record) {
             const list = document.getElementById('result-video-list');
             if (!list || typeof LEARNING_VIDEOS === 'undefined') return;
 
             list.innerHTML = '';
-            pickLectureIds(record).forEach(id => {
-                const video = LEARNING_VIDEOS.find(item => item.id === id);
-                if (!video) return;
-
-                const row = document.createElement('div');
-                row.className = 'lecture';
-                row.innerHTML = `
-                    <button class="lecture-hit" type="button" onclick="playLecture(this)">
-                        <span class="lecture-thumb">
-                            <img src="https://i.ytimg.com/vi/${video.id}/mqdefault.jpg" alt="" loading="lazy">
-                            <span class="lecture-play"><i class="ri-play-fill"></i></span>
-                        </span>
-                        <span class="lecture-meta">
-                            <span class="lecture-title">${escapeHtmlText(video.title)}</span>
-                            <span class="lecture-channel">${escapeHtmlText(video.channel)} &middot; YouTube</span>
-                        </span>
-                    </button>
-                `;
-                list.appendChild(row);
-            });
+            const areas = getWeakAreas(record);
+            if (!areas.needsWork) {
+                emptyRecommendation(list, 'No weak topics to revise &mdash; no lecture is needed for this result.');
+            } else {
+                rankByWeakAreas(LEARNING_VIDEOS, areas.text, 3).forEach(video => {
+                    const row = document.createElement('div');
+                    row.className = 'lecture';
+                    row.innerHTML = `
+                        <button class="lecture-hit" type="button" onclick="playLecture(this)">
+                            <span class="lecture-thumb">
+                                <img src="https://i.ytimg.com/vi/${video.id}/mqdefault.jpg" alt="" loading="lazy">
+                                <span class="lecture-play"><i class="ri-play-fill"></i></span>
+                            </span>
+                            <span class="lecture-meta">
+                                <span class="lecture-title">${escapeHtmlText(video.title)}</span>
+                                <span class="lecture-channel">${escapeHtmlText(video.channel)} &middot; YouTube</span>
+                            </span>
+                        </button>
+                    `;
+                    list.appendChild(row);
+                });
+            }
 
             // When the pages are opened from disk the player cannot work, so say
-            // why and point at the launcher that fixes it.
+            // why and point at the copy that can play it.
             if (isLocalFileMode()) {
                 const note = document.createElement('p');
                 note.className = 'lecture-note';
-                note.innerHTML = '<i class="ri-error-warning-line"></i><span>YouTube blocks in-page playback when the site is opened straight from disk (error 153). Start it with <strong>Start ATLAS.bat</strong> to watch lectures here &mdash; until then a lecture opens on YouTube.</span>';
+                note.innerHTML = '<i class="ri-error-warning-line"></i><span>YouTube blocks in-page playback when the site is opened straight from disk (error 153). Open the hosted copy of the site to watch lectures here &mdash; until then a lecture opens on YouTube.</span>';
                 list.parentNode.insertBefore(note, list);
             }
-        }
-
-        // Which lectures to show: the topics this attempt was weakest in decide
-        // the order of preference, and the three best-fitting lectures are shown.
-        function pickLectureIds(record) {
-            const mod = examModules.find(m => m.id === record.moduleId);
-            const byParts = !!(mod && Array.isArray(mod.parts) && mod.parts.length);
-            const weakTopics = groupDetails(record, byParts ? 'part' : 'category')
-                .filter(group => group.pct < UNLOCK_THRESHOLD)
-                .map(group => group.name.toLowerCase())
-                .join(' ');
-
-            const score = video => video.tags.reduce(
-                (total, tag) => total + (weakTopics.indexOf(tag) !== -1 ? 1 : 0), 0);
-
-            return LEARNING_VIDEOS
-                .map((video, index) => ({ id: video.id, score: score(video), order: index }))
-                .sort((a, b) => (b.score - a.score) || (a.order - b.order))
-                .slice(0, 3)
-                .map(entry => entry.id);
         }
 
         // Play a lecture in the centred overlay — bigger picture, dark-tinted
@@ -1571,7 +1606,7 @@ function percentageToCollegeGrade(percentage) {
                 <div class="pr-head">
                     <div>
                         <div class="pr-brand">ATLAS</div>
-                        <div class="pr-sub">Abstract Testing &amp; Library Assessment System</div>
+                        <div class="pr-sub">Abstracting Test and LIS Assessment System</div>
                     </div>
                     <div class="pr-doc">Assessment Result</div>
                 </div>
